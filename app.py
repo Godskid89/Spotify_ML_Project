@@ -43,9 +43,17 @@ if options == "Data Exploration":
     
     # Correlation Heatmap
     st.subheader("Correlation Heatmap")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.heatmap(data.corr(), annot=False, cmap="coolwarm", ax=ax)
-    st.pyplot(fig)
+
+    # Filter numeric columns
+    numeric_data = data.select_dtypes(include=['number'])
+
+    # Generate the correlation heatmap
+    if numeric_data.shape[1] > 1:  # Ensure there are at least two numeric columns to calculate correlations
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.heatmap(numeric_data.corr(), annot=False, cmap="coolwarm", ax=ax)
+        st.pyplot(fig)
+    else:
+        st.write("Not enough numeric variables to generate a correlation heatmap.")
 
 # Section: Make Prediction
 elif options == "Make Prediction":
